@@ -2,8 +2,8 @@
 //  main.cpp
 //  LOF
 //
-//  Created by kenta-n on 2014/02/11.
-//  Copyright (c) 2014年 kenta-n. All rights reserved.
+//  Created by saigyo on 2014/02/11.
+//  Copyright (c) 2014年 saigyo. All rights reserved.
 //
 
 #include <iostream>
@@ -46,10 +46,9 @@ int main(int argc, const char * argv[])
     while(1)
     {
         image.setTo(0);
-        for(std::vector<cv::Point>::iterator it = vec_pt.begin();
-            it < vec_pt.end(); ++it)
+        for(auto pt : vec_pt)
         {
-            cv::circle(image, *it, 1, cv::Scalar(255, 0, 0), -1);
+            cv::circle(image, pt, 1, cv::Scalar(0, 255, 0), -1);
         }
         
         cv::imshow("window", image);
@@ -75,21 +74,18 @@ int main(int argc, const char * argv[])
             
             std::vector<int> outlier;
             const int nearest_num = 10;
-            Lof lof(1.6, nearest_num, vec);
-            lof.outlierDetect(vec, outlier);
-            for(auto it = vec_pt.begin(); it != vec_pt.end(); ++it)
+            std::shared_ptr<Lof> lof(new Lof(1.6, nearest_num, vec));
+            lof->outlierDetect(vec, outlier);
+            for(int i = 0; i < vec_pt.size(); ++i)
             {
-                int id = static_cast<int> (std::distance(vec_pt.begin(), it));
-                cv::Scalar color;
-                
-                //not outlier
-                if(std::find(outlier.begin(), outlier.end(), id) == outlier.end())
+                bool is_outlier = !(std::find(outlier.begin(), outlier.end(), i) == outlier.end());
+                if(is_outlier)
                 {
-                    cv::circle(image, *it, 1, cv::Scalar(255, 0, 0), -1);
+                    cv::circle(image, vec_pt[i], 3, cv::Scalar(0, 0, 255), -1);
                 }
-                else //outlier
+                else
                 {
-                    cv::circle(image, *it, 3, cv::Scalar(0, 0, 255), -1);
+                    cv::circle(image, vec_pt[i], 1, cv::Scalar(0, 255, 0), -1);
                 }
             }
             

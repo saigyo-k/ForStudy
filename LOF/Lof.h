@@ -2,8 +2,8 @@
 //  Lof.h
 //  LOF
 //
-//  Created by kenta-n on 2014/02/11.
-//  Copyright (c) 2014年 kenta-n. All rights reserved.
+//  Created by saigyo on 2014/02/11.
+//  Copyright (c) 2014年 saigyo. All rights reserved.
 //
 
 #ifndef __LOF__Lof__
@@ -24,7 +24,7 @@ class Lof
 public:
     Lof(double lof_th, int nearest_num, cv::Mat_<float> &vector);
     ~Lof();
-    
+
     //Detect outlier by LOF
     //vector: feature descriptors
     //outlier:
@@ -35,7 +35,7 @@ private:
     //vector: feature descriptors
     //target_num: number of target to calculate LOF
     double calcLof(const cv::Mat_<float> &vector, int target_num);
-    
+
     //Calculate the LRD(local reachability density)
     //Return: local reachability density
     //vector: feature descriptors
@@ -43,11 +43,11 @@ private:
     //nearest_neighbor: nearest neighbor of target descriptor
     double calcLrd(const cv::Mat_<float> &vector, int target_num);
     double calcLrd(const cv::Mat_<float> &vector, int target_num, std::vector<int> &nearest_neighbor);
-    
+
     void makeIndexNearestNeighbor(const cv::Mat_<float> &vector);
-    
+
     void detectNearestNeighbor(const cv::Mat_<float> &vector, int target_num, int nearest_num, std::vector<int> &nearest_neighbor);
-    
+
     //*****Data*****
 private:
     //*****Konst*****
