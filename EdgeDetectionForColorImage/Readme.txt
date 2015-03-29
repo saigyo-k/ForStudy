@@ -1,12 +1,7 @@
-LOF(Local Outlier Factor)を用いた異常検知プログラム
+Develop with the below reference.
 
-Usage:
-１．Window上で左クリックして、データ点を作成。
-　　３０個程度あれば、十分のはず。
-２．”l”を押すと、異常検知を行います。
-　　異常（外れている）点は赤色で表示されます。
-３．適当なキーを押すと、異常データの表示を終了します。
-４．”q”を押すと、終了します。
+Vector Order Statistics Operators as Color Edge Detectors
+https://tspace.library.utoronto.ca/bitstream/1807/10051/1/Venetsanopoulos_11349_535.pdf
 
 The MIT License (MIT)
 Copyright (c) [2015] [saigyo-k]
