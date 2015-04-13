@@ -4,9 +4,12 @@
 
 #include "ColorEdge.h"
 
-ColorEdge::ColorEdge(int param_k, int param_l)
-: param_k_(param_k), param_l_(param_l)
+ColorEdge::ColorEdge(int param_k, int param_l, int filter_size)
+: param_k_(param_k), param_l_(param_l), filter_size_(filter_size)
 {
+    assert(filter_size >= 3 && filter_size % 2 == 1);
+    assert(param_k < (filter_size * filter_size));
+    assert(param_l < (filter_size * filter_size));
 }
 
 ColorEdge::~ColorEdge() {
@@ -15,15 +18,17 @@ ColorEdge::~ColorEdge() {
 void ColorEdge::detectColorEdge(const cv::Mat_<cv::Vec3b> &image, cv::Mat_<uchar> &edge)
 {
     cv::Mat_<double> edge_map(image.size());
-    for(int y = 1; y < (edge_map.rows - 1); ++y)
+    const int filter_half = static_cast<int>(filter_size_ / 2);
+
+    for(int y = filter_half; y < (edge_map.rows - filter_half); ++y)
     {
-        for(int x = 1; x < (edge_map.cols - 1); ++x)
+        for(int x = filter_half; x < (edge_map.cols - filter_half); ++x)
         {
-            cv::Mat_<cv::Vec3b> roi(image, cv::Rect(x - 1, y - 1, 3, 3));
+            cv::Mat_<cv::Vec3b> roi(image, cv::Rect(x - filter_half, y - filter_half, filter_size_, filter_size_));
             edge_map(y, x) = calculateMVD(roi);
         }
     }
-
+    
     edge_map.convertTo(edge, edge.type());
 }
 
@@ -59,7 +64,7 @@ double ColorEdge::calculateMVD(const cv::Mat_<cv::Vec3b> &roi) {
             sum_l += vec_and_dist[i].second / param_l_;
         }
 
-        double v = std::fabs(vec_and_dist[n - j + 1].second - sum_l);
+        double v = std::fabs(vec_and_dist[n - j - 1].second - sum_l);
         values.push_back(v);
     }
 

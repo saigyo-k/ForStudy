@@ -10,6 +10,7 @@
 #include <utility>
 #include <algorithm>
 #include <math.h>
+#include <assert.h>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -18,7 +19,7 @@ class ColorEdge {
     typedef std::pair<cv::Vec3b, double> VecDist;
 
 public:
-    explicit ColorEdge(int param_k, int param_l);
+    explicit ColorEdge(int param_k, int param_l, int filter_size = 3);
     ~ColorEdge();
     void detectColorEdge(const cv::Mat_<cv::Vec3b> &image, cv::Mat_<uchar> &edge);
 
@@ -29,7 +30,7 @@ private:
 
     const int param_k_;
     const int param_l_;
-
+    const int filter_size_;
 };
 
 
